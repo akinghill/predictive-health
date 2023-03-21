@@ -13,8 +13,20 @@ export default function Home() {
     maxHeartRate: 150,
     exerciseInducedAngina: 0,
     stDepression: 0.0,
-    slope: 0,
+    stSlope: 0,
   });
+
+  const [results, setResults] = useState<undefined | string>();
+
+  const handleBloodSugarChange = (event: any) => {
+    const { name, value } = event.target;
+    let bloodSugar = value > 120 ? 1 : 0;
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: bloodSugar,
+    }));
+  };
 
   const handleChange = (event: any) => {
     const { name, value } = event.target;
@@ -26,7 +38,13 @@ export default function Home() {
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    const data = Object.values(formData);
+    const data = Object.values(formData).map((value) => {
+      const num = Number(value);
+      if (Number.isNaN(num)) {
+        throw new Error('Invalid input');
+      }
+      return num;
+    });
 
     console.log(JSON.stringify(data));
 
@@ -42,6 +60,7 @@ export default function Home() {
       .then((response) => response.json())
       .then((data) => {
         console.log('Success:', data);
+        setResults(data);
       });
   };
 
@@ -53,7 +72,8 @@ export default function Home() {
       </h1>
 
       <p>
-        Enter your details below to view the performance of one of our models
+        Enter your details below to view the performance of our machine learning
+        models.
       </p>
 
       <form onSubmit={handleSubmit}>
@@ -116,6 +136,7 @@ export default function Home() {
             style={{ marginTop: '0px' }}
             className="select select-bordered w-full max-w-xs"
             defaultValue={'Typical Angina'}
+            name="chestPain"
           >
             <option disabled>Chest Pain</option>
             <option value="3">Typical Angina</option>
@@ -180,8 +201,7 @@ export default function Home() {
                 name="fastingBloodSugar"
                 min={0}
                 max={600}
-                value={formData.fastingBloodSugar}
-                onChange={handleChange}
+                onChange={handleBloodSugarChange}
               />
               <span>mg/dl</span>
             </label>
@@ -217,6 +237,7 @@ export default function Home() {
             style={{ marginTop: '0px' }}
             className="select select-bordered w-full max-w-xs"
             defaultValue={'Normal'}
+            name="restingECG"
           >
             <option disabled>Resting ECG</option>
             <option value={0}>Normal</option>
@@ -288,6 +309,8 @@ export default function Home() {
             style={{ marginTop: '0px' }}
             className="select select-bordered w-full max-w-xs"
             defaultValue={'Upsloping'}
+            onChange={handleChange}
+            name="stSlope"
           >
             <option disabled>ST Slope</option>
             <option value={0}>Upsloping</option>
@@ -304,7 +327,17 @@ export default function Home() {
           Predict
         </button>
       </form>
-      <div>Results</div>
+
+      <div>
+        <span>Results:</span>
+        {results == undefined ? (
+          <span> Predict to see results.</span>
+        ) : results == '0' ? (
+          <span> No Heart Disease</span>
+        ) : (
+          <span> Heart Disease</span>
+        )}
+      </div>
     </main>
   );
 }

@@ -7,13 +7,11 @@ export default function Home() {
     sex: 0,
     chestPain: 0,
     restingBloodPressure: 120,
-    cholesterol: 233,
     fastingBloodSugar: 120,
     restingECG: 0,
     maxHeartRate: 150,
     exerciseInducedAngina: 0,
     stDepression: 0.0,
-    stSlope: 0,
   });
 
   const [results, setResults] = useState<undefined | string>();
@@ -170,27 +168,6 @@ export default function Home() {
         <div className="flex flex-col space-y-4 pt-4">
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Cholesterol</span>
-            </label>
-            <label className="input-group">
-              <input
-                className="input input-bordered"
-                type="number"
-                placeholder="233"
-                name="cholesterol"
-                min={0}
-                max={600}
-                value={formData.cholesterol}
-                onChange={handleChange}
-              />
-              <span>mm/dl</span>
-            </label>
-          </div>
-        </div>
-
-        <div className="flex flex-col space-y-4 pt-4">
-          <div className="form-control">
-            <label className="label">
               <span className="label-text">Fasting Blood Sugar</span>
             </label>
             <label className="input-group">
@@ -299,24 +276,6 @@ export default function Home() {
               <span>mm</span>
             </label>
           </div>
-        </div>
-
-        <div className="flex flex-col space-y-4 pt-4">
-          <label className="label">
-            <span className="label-text">ST Slope</span>
-          </label>
-          <select
-            style={{ marginTop: '0px' }}
-            className="select select-bordered w-full max-w-xs"
-            defaultValue={'Upsloping'}
-            onChange={handleChange}
-            name="stSlope"
-          >
-            <option disabled>ST Slope</option>
-            <option value={0}>Upsloping</option>
-            <option value={1}>Flat</option>
-            <option value={2}>Downsloping</option>
-          </select>
         </div>
 
         <button

@@ -46,7 +46,7 @@ export default function Home() {
 
     console.log(JSON.stringify(data));
 
-    fetch('http://10.0.0.228/predict', {
+    fetch('http://ec2-3-145-56-228.us-east-2.compute.amazonaws.com/predict', {
       method: 'POST',
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -72,6 +72,12 @@ export default function Home() {
       <p>
         Enter your details below to view the performance of our machine learning
         models.
+      </p>
+      <p>
+        For more information on how the model was trained visit:{' '}
+        <a href="https://github.com/akinghill/predictive-health-ml/blob/main/heart_disease.py.ipynb">
+          Predictive Health Training
+        </a>
       </p>
 
       <form onSubmit={handleSubmit}>
@@ -292,9 +298,9 @@ export default function Home() {
         {results == undefined ? (
           <span> Predict to see results.</span>
         ) : results == '0' ? (
-          <span> No Heart Disease</span>
+          <span> Heart Disease Not Predicted</span>
         ) : (
-          <span> Heart Disease</span>
+          <span> Heart Disease Predicted</span>
         )}
       </div>
     </main>
